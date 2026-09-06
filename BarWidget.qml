@@ -1,51 +1,52 @@
 import QtQuick
-import QtQuick.Controls
-import QtQuick.Layouts
 import qs.Commons
 import qs.Ui
 
-Item {
-    id: root
-    width: 32
-    height: 32
+BarWidget {
+  id: root
+  moduleName: "community.timer-counter"
 
-    // Bar widget lifecycle
-    // The shell injects 'shell', 'manifest', etc.
+  readonly property bool opened: panelLoader.item ? panelLoader.item.opened === true : false
+  readonly property bool popoutSwitchClosing: panelLoader.item ? panelLoader.item.popoutSwitchClosing === true : false
 
-import QtQuick
-import QtQuick.Controls
-import QtQuick.Layouts
-import qs.Commons
-import qs.Ui
+  function injectPanel() {
+    if (!panelLoader.item) return
+    panelLoader.item.bar = root.bar
+    panelLoader.item.anchorItem = button
+    panelLoader.item.hostWidget = root
+  }
 
-Item {
-    id: root
-    width: 32
-    height: 32
+  function open() { if (panelLoader.item) panelLoader.item.open() }
+  function close() { if (panelLoader.item) panelLoader.item.close() }
+  function toggle() { if (panelLoader.item) panelLoader.item.toggle() }
+  function closeForPopoutSwitch() {
+    if (panelLoader.item) panelLoader.item.closeForPopoutSwitch()
+  }
 
-    TapHandler {
-        onTapped: {
-            // The bar widget receives 'shell' as an injected property in Omarchy.
-            // If it's undefined, we fall back to a shell command if possible, 
-            // but let's ensure the summon works.
-            if (typeof shell !== "undefined") {
-                shell.summon("community.timer-counter", "{}")
-            }
-        }
+  implicitWidth: button.implicitWidth
+  implicitHeight: button.implicitHeight
+  onBarChanged: injectPanel()
+
+  Loader {
+    id: panelLoader
+    active: true
+    source: Qt.resolvedUrl("TimerPanel.qml")
+    visible: false
+    onLoaded: {
+      root.injectPanel()
+      Qt.callLater(root.injectPanel)
     }
+  }
 
-    Text {
-        anchors.centerIn: parent
-        text: "⏱"
-        font.pixelSize: 18
-        color: Color.foreground
+  BarIconButton {
+    id: button
+    anchors.fill: parent
+    bar: root.bar
+    text: panelLoader.item && panelLoader.item.running ? panelLoader.item.formattedTime : "⏱"
+    tooltipText: panelLoader.item && panelLoader.item.timerSeconds > 0
+      ? "Timer: " + panelLoader.item.formattedTime : "Timer"
+    onPressed: function(buttonCode) {
+      if (buttonCode === Qt.LeftButton) root.toggle()
     }
-}
-
-    Text {
-        anchors.centerIn: parent
-        text: "⏱" // Timer emoji
-        font.pixelSize: 18
-        color: Color.foreground
-    }
+  }
 }
