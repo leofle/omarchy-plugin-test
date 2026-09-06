@@ -2,11 +2,12 @@
   "schemaVersion": 1,
   "id": "community.timer-counter",
   "name": "Timer Counter",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "leofle",
-  "description": "A panel with a countdown timer: create, start, stop, and reset.",
-  "kinds": ["panel"],
+  "description": "A timer-counter with a bar widget icon and a popup panel.",
+  "kinds": ["bar-widget", "panel"],
   "entryPoints": {
+    "barWidget": "BarWidget.qml",
     "panel": "TimerPanel.qml"
   }
 }
