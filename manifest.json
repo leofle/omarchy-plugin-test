@@ -2,12 +2,15 @@
   "schemaVersion": 1,
   "id": "community.timer-counter",
   "name": "Timer Counter",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "leofle",
   "description": "A timer-counter with a bar widget icon and a popup panel.",
   "kinds": ["bar-widget", "panel"],
   "entryPoints": {
     "barWidget": "BarWidget.qml",
     "panel": "TimerPanel.qml"
+  },
+  "barWidget": {
+    "defaultSection": "right"
   }
 }
