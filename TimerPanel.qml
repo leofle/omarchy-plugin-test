@@ -4,25 +4,23 @@ import QtQuick.Layouts
 import qs.Commons
 import qs.Ui
 
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import qs.Commons
+import qs.Ui
+
 Item {
     id: root
     property string title: "Timer Counter"
-    property bool visibleInPanel: false
+    property int timerSeconds: 0
+    property bool isRunning: false
 
-    // Lifecycle methods required by the plugin contract
-    function open(payloadJson) {
-        visibleInPanel = true;
-    }
-
-    function close() {
-        visibleInPanel = false;
-    }
+    function open(payloadJson) {}
+    function close() {}
 
     width: 400
     height: 500
-    visible: visibleInPanel
-
-    // This is a skeletal structure for the plugin.
 
     ColumnLayout {
         anchors.fill: parent
@@ -73,7 +71,7 @@ Item {
                 text: "Reset"
                 onClicked: {
                     root.isRunning = false;
-                    // Reset logic would be more complex in a real app
+                    root.timerSeconds = 0;
                 }
             }
         }
@@ -89,7 +87,6 @@ Item {
         }
     }
 
-    // Real timer implementation would go here
     Timer {
         id: actualTimer
         interval: 1000
