@@ -7,17 +7,22 @@ import qs.Ui
 Item {
     id: root
     property string title: "Timer Counter"
+    property bool visibleInPanel: false
 
-    // Placeholder for timer logic
-    property int timerSeconds: 0
-    property bool isRunning: false
-    property Timer countdownTimer
+    // Lifecycle methods required by the plugin contract
+    function open(payloadJson) {
+        visibleInPanel = true;
+    }
+
+    function close() {
+        visibleInPanel = false;
+    }
 
     width: 400
     height: 500
+    visible: visibleInPanel
 
     // This is a skeletal structure for the plugin.
-    // In a real implementation, you would use actual timer logic and UI components.
 
     ColumnLayout {
         anchors.fill: parent
